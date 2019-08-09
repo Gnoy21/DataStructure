@@ -41,23 +41,14 @@ void printList(header *h){
 
     printf("List = [");
 
-    if(h->header == NULL){
+    while(temp->link != NULL){
 
-        printf("]\n");
-
-    }
-    else{
-
-        while(temp->link != NULL){
-
-            printf("%d, ", temp->data);
-            temp    = temp->link;
-
-        }
-
-        printf("%d]\n", temp->data);
+        printf("%d, ", temp->data);
+        temp    = temp->link;
 
     }
+
+    printf("%d]\n", temp->data);
 
 }
 
@@ -100,7 +91,7 @@ int includeNode(header *h, int data){
 
         printf("List is empty!\n");
 
-        return;
+        return 0;
 
     }
 
