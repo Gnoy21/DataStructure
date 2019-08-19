@@ -43,108 +43,50 @@ node* insertNode(node *rootNode, int data){
 
 }
 
-void deleteNode(node *rootNode, int data){
+node* findMinNode(node *rootNode){
 
-    //p : 차수가 1일 때 자식 노드를 임시저장하기 위한 변수
-    node *parent, *child, *old;
+    node *temp  = rootNode;
 
-    old   = rootNode;
+    if(rootNode == NULL) return NULL;
 
-    while(1){
+    while(temp->left != NULL){
 
-        if(old == NULL){
-
-            printf("일치하는 Node가 없습니다.\n");
-
-            return;
-
-        }
-        else if(old->data == data){
-
-            break;
-
-        }
-
-        parent  = old;
-
-        if(old->data > data){
-
-            old   = old->left;
-
-        }
-        else if(old->data < data){
-
-            old   = old->right;
-
-        }
+        temp    = temp->left;
 
     }
 
-    if(old->left == NULL && old->right == NULL){
+    return temp;
 
-        if(old != rootNode){
+}
 
-            if(parent->left == old){
+node* deleteNode(node *rootNode, int data){
 
-                parent->left    = NULL;
+    node *tNode;
 
-            }
-            else{
+    if(rootNode == NULL) return NULL;
 
-                parent->right   = NULL;
-
-            }
-
-        }
-        else{
-
-            rootNode    = NULL;
-
-        }
-
-    }
-    else if(old->left == NULL || old->right == NULL){
-
-        //자식 노드를 임시저장하기 위한 조건문
-        if(old->left == NULL){
-
-            child   = old->right;
-
-        }
-        else{
-
-            child   = old->left;
-
-        }
-
-        if(old != rootNode){
-
-            if(parent->left == old){
-
-                parent->left    = child;
-
-            }
-            else{
-
-                parent->right   = child;
-
-            }
-
-        }
-        else{
-
-            rootNode    = child;
-
-        }
-
-    }
+    if(rootNode->data > data) rootNode->left = deleteNode(rootNode->left, data);
+    else if(rootNode->data < data) rootNode->right = deleteNode(rootNode->right, data);
     else{
 
-        return;
+        if(rootNode->left != NULL && rootNode->right != NULL){
+
+            tNode   = findMinNode(rootNode->right);
+            rootNode->data  = tNode->data;
+            rootNode->right = deleteNode(rootNode->right, tNode->data);
+
+        }
+        else{
+
+            tNode   = (rootNode->left == NULL) ? rootNode->right : rootNode->left;
+            free(rootNode);
+            return tNode;
+
+        }
 
     }
 
-    free(old);
+    return rootNode;
 
 }
 
@@ -166,15 +108,15 @@ int main(){
     node *rootNode  = (node*)malloc(sizeof(node));
     rootNode        = NULL;
 
-    rootNode        = insertNode(rootNode, 5);
-    rootNode        = insertNode(rootNode, 7);
-    rootNode        = insertNode(rootNode, 10);
-    rootNode        = insertNode(rootNode, 9);
-    rootNode        = insertNode(rootNode, 100);
-    rootNode        = insertNode(rootNode, 1);
-    rootNode        = insertNode(rootNode, 2);
-    rootNode        = insertNode(rootNode, 33);
-    deleteNode(rootNode, 33);
+    rootNode    = insertNode(rootNode, 5);
+    rootNode    = insertNode(rootNode, 7);
+    rootNode    = insertNode(rootNode, 10);
+    rootNode    = insertNode(rootNode, 9);
+    rootNode    = insertNode(rootNode, 100);
+    rootNode    = insertNode(rootNode, 1);
+    rootNode    = insertNode(rootNode, 2);
+    rootNode    = insertNode(rootNode, 33);
+    rootNode    = deleteNode(rootNode, 5);
 
     printTree(rootNode);
 
