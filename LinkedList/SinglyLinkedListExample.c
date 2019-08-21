@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 
 typedef struct listNode{
 
@@ -17,7 +17,7 @@ typedef struct header{
 
 header* createList(){
 
-    header *h   = malloc(sizeof(header));
+    header *h   = (header*)malloc(sizeof(header));
     h->header   = NULL;
     h->count    = 0;
 
