@@ -43,15 +43,12 @@ void createDice(dice *D){
 
     }
 
-    printf("create complete!!\n");
-
 }
 
 void setDice(dice *D){
 
-    eyes *temp      = malloc(sizeof(eyes));
-    eyes *newEyes   = malloc(sizeof(eyes));
-    temp            = D->header;
+    eyes *temp      = D->header;
+    eyes *newEyes   = (eyes*)malloc(sizeof(eyes));
     newEyes->link   = NULL;
     newEyes->state  = 0;
 
@@ -81,7 +78,7 @@ void setDice(dice *D){
 
 void printDice(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
+    eyes *temp  = (eyes*)malloc(sizeof(eyes));
     temp        = D->header;
     Flag        = 0;
 
@@ -159,8 +156,7 @@ void throwDice(dice *D){
 
 void setOne(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
-    temp        = D->header;
+    eyes *temp  = D->header;
 
     for(int i = 0; i < 9; i++){
 
@@ -183,8 +179,7 @@ void setOne(dice *D){
 
 void setTwo(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
-    temp        = D->header;
+    eyes *temp  = D->header;
 
     for(int i = 0; i < 9; i++){
 
@@ -207,8 +202,7 @@ void setTwo(dice *D){
 
 void setThree(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
-    temp        = D->header;
+    eyes *temp  = D->header;
 
     for(int i = 0; i < 9; i++){
 
@@ -231,8 +225,7 @@ void setThree(dice *D){
 
 void setFour(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
-    temp        = D->header;
+    eyes *temp  = D->header;
 
     for(int i = 0; i < 9; i++){
 
@@ -255,8 +248,7 @@ void setFour(dice *D){
 
 void setFive(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
-    temp        = D->header;
+    eyes *temp  = D->header;
 
     for(int i = 0; i < 9; i++){
 
@@ -279,8 +271,7 @@ void setFive(dice *D){
 
 void setSix(dice *D){
 
-    eyes *temp  = malloc(sizeof(eyes));
-    temp        = D->header;
+    eyes *temp  = D->header;
 
     for(int i = 0; i < 9; i++){
 
@@ -303,7 +294,7 @@ void setSix(dice *D){
 
 int main(){
 
-    dice *D = malloc(sizeof(dice));
+    dice *D = (dice*)malloc(sizeof(dice));
 
     createDice(D);
     throwDice(D);

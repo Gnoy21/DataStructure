@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<time.h>
 
 typedef struct node{
 
@@ -19,7 +18,7 @@ typedef struct header{
 
 header* createList(){
 
-    header *h   = malloc(sizeof(header));
+    header *h   = (header*)malloc(sizeof(header));
     h->header   = NULL;
     h->count    = 0;
 
@@ -29,45 +28,43 @@ header* createList(){
 
 void printList(header *h){
 
-    node *temp  = malloc(sizeof(node));
-    temp        = h->header;
-
     if(h->count == 0){
 
-        printf("List is empty!\n");
+        printf("Node가 없습니다!\n");
 
         return;
 
     }
 
-    printf("List = [");
+    node *temp  = h->header;
 
-    while(temp->right != NULL){
+    printf("List = [ ");
 
-        printf("%d, ", temp->data);
+    while(temp){
+
+        printf("%d ", temp->data);
 
         temp    = temp->right;
 
     }
 
-    printf("%d]\n", temp->data);
+    printf("]\n");
 
 }
 
 void reversePrintList(header *h){
 
-    node *temp  = malloc(sizeof(node));
-    temp        = h->header;
-
     if(h->count == 0){
 
-        printf("List is empty!\n");
+        printf("Node가 없습니다!\n");
 
         return;
 
     }
 
-    printf("List = [");
+    node *temp  = h->header;
+
+    printf("List = [ ");
 
     while(temp->right != NULL){
 
@@ -75,21 +72,21 @@ void reversePrintList(header *h){
 
     }
 
-    while(temp->left != NULL){
+    while(temp){
 
-        printf("%d, ", temp->data);
+        printf("%d ", temp->data);
 
         temp    = temp->left;
 
     }
 
-    printf("%d]\n", temp->data);
+    printf("]\n");
 
 }
 
 void createNode(header *h, int data){
 
-    node *newNode   = malloc(sizeof(node));
+    node *newNode   = (node*)malloc(sizeof(node));
     newNode->data   = data;
 
     if(h->header == NULL){
@@ -101,8 +98,7 @@ void createNode(header *h, int data){
     }
     else{
 
-        node *temp  = malloc(sizeof(node));
-        temp        = h->header;
+        node *temp  = h->header;
 
         while(temp->right != NULL){
 
@@ -122,16 +118,15 @@ void createNode(header *h, int data){
 
 void deleteNode(header *h, int data){
 
-    node *temp  = malloc(sizeof(node));
-    temp        = h->header;
-
     if(h->count == 0){
 
-        printf("List is empty!\n");
+        printf("Node가 없습니다!\n");
 
         return;
 
     }
+
+    node *temp  = h->header;
 
     if(temp->data == data){
 
@@ -146,7 +141,7 @@ void deleteNode(header *h, int data){
 
     temp    = temp->right;
 
-    while(1){
+    while(temp->right == NULL){
 
         if(temp->data == data){
 
@@ -154,13 +149,8 @@ void deleteNode(header *h, int data){
             temp->right->left   = temp->left;
 
             free(temp);
+
             return;
-
-        }
-
-        if(temp->right == NULL){
-
-            break;
 
         }
 
@@ -168,14 +158,13 @@ void deleteNode(header *h, int data){
 
     }
 
-    printf("Matching node is not exitst!\n");
+    printf("일치하는 node가 없습니다!\n");
 
 }
 
 int main(){
 
-    header *h   = malloc(sizeof(header));
-    h           = createList();
+    header *h   = createList();
 
     createNode(h, 10);
     createNode(h, 15);

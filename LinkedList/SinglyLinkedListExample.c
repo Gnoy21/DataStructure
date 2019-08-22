@@ -25,33 +25,17 @@ header* createList(){
 
 }
 
-//Node가 없다면 1, 있다면 0 반환
-int checkEmpty(header *h){
-
-    if(h->count == 0){
-
-        return 1;
-
-    }
-    else{
-
-        return 0;
-
-    }
-
-}
-
 void printList(header *h){
 
-    node *temp  = h->header;
-
-    if(checkEmpty(h)){
+    if(h->count == 0){
 
         printf("Node가 없습니다!\n");
 
         return;
 
     }
+
+    node *temp    = h->header;
 
     printf("List = [ ");
 
@@ -66,8 +50,15 @@ void printList(header *h){
 
 }
 
-//매개변수 data와 일치하는 node 반환 없다면 NULL 반환
 node* searchNode(header *h, int data){
+
+    if(h->count == 0){
+
+        printf("Node가 없습니다!\n");
+
+        return NULL;
+
+    }
 
     node *temp  = h->header;
 
@@ -89,6 +80,14 @@ node* searchNode(header *h, int data){
 
 node* searchLastNode(header *h){
 
+    if(h->count == 0){
+
+        printf("Node가 없습니다!\n");
+
+        return NULL;
+
+    }
+
     node *temp  = h->header;
 
     while(temp->link != NULL){
@@ -103,7 +102,7 @@ node* searchLastNode(header *h){
 
 void insertFirstNode(header *h, int data){
 
-    node *newNode   = malloc(sizeof(node));
+    node *newNode   = (node*)malloc(sizeof(node));
     newNode->data   = data;
     newNode->link   = h->header;
     h->header       = newNode;
@@ -113,16 +112,13 @@ void insertFirstNode(header *h, int data){
 
 void insertMiddleNode(header *h, int preData, int data){
 
-    node *newNode   = malloc(sizeof(node));
+    node *newNode   = (node*)malloc(sizeof(node));
     newNode->data   = data;
 
-    if(checkEmpty(h)){
+    if(h->count == 0){
 
-        h->header       = newNode;
         newNode->link   = NULL;
-        h->count++;
-
-        return;
+        h->header       = newNode;
 
     }
     else{
@@ -148,18 +144,12 @@ void insertMiddleNode(header *h, int preData, int data){
 
 void insertLastNode(header *h, int data){
 
-    node *newNode   = malloc(sizeof(node));
+    node *newNode   = (node*)malloc(sizeof(node));
     newNode->data   = data;
     newNode->link   = NULL;
 
-    if(checkEmpty(h)){
-
+    if(h->count == 0)
         h->header   = newNode;
-        h->count++;
-
-        return;
-
-    }
     else{
 
         node *temp  = searchLastNode(h);
@@ -172,15 +162,15 @@ void insertLastNode(header *h, int data){
 
 void deleteFirstNode(header *h){
 
-    node *temp  = h->header;
+    if(h->count == 0){
 
-    if(checkEmpty(h)){
-
-        printf("삭제 할 Node가 없습니다\n");
+        printf("Node가 없습니다!\n");
 
         return;
 
     }
+
+    node *temp  = h->header;
 
     h->header   = h->header->link;
 
@@ -190,9 +180,9 @@ void deleteFirstNode(header *h){
 
 void deleteMiddleNode(header *h, int preData){
 
-    if(checkEmpty(h)){
+    if(h->count == 0){
 
-        printf("삭제 할 Node가 없습니다\n");
+        printf("Node가 없습니다!\n");
 
         return;
 
@@ -202,13 +192,12 @@ void deleteMiddleNode(header *h, int preData){
 
     if(pre == searchLastNode(h)){
 
-        printf("마지막 node는 삭제 할 수 없습니다. deleteLastNode를 사용해주세요\n");
+        printf("마지막 node는 삭제는 deleteLastNode를 사용해주세요\n");
 
         return;
 
     }
-
-    if(pre == NULL){
+    else if(pre == NULL){
 
         printf("이전 Node를 찾지 못했습니다.\n");
 
@@ -217,7 +206,7 @@ void deleteMiddleNode(header *h, int preData){
     }
 
     node *old   = pre->link;
-    pre->link   = pre->link->link;
+    pre->link   = old->link;
 
     free(old);
 
@@ -225,11 +214,19 @@ void deleteMiddleNode(header *h, int preData){
 
 void deleteLastNode(header *h){
 
-    if(checkEmpty(h)){
+    if(h->count == 0){
 
-        printf("삭제 할 Node가 없습니다.\n");
+        printf("Node가 없습니다!\n");
 
         return;
+
+    }
+    else if(h->count == 1){
+
+        node *old   = h->header;
+        h->header   = NULL;
+
+        free(old);
 
     }
     else{
@@ -243,7 +240,7 @@ void deleteLastNode(header *h){
         }
 
         node *old   = temp->link;
-        temp->link  = temp->link->link;
+        temp->link  = old->link;
 
         free(old);
 
@@ -253,12 +250,20 @@ void deleteLastNode(header *h){
 
 header* bubbleSortList(header *h){
 
-    node *num1  = malloc(sizeof(node));
-    node *num2  = malloc(sizeof(node));
-    node *temp  = malloc(sizeof(node));
+    if(h->count == 0){
+
+        printf("Node가 없습니다!\n");
+
+        return h;
+
+    }
+    else if(h->count == 1)
+        return h;
+
+    node *num1, *num2, *temp;
     int max     = h->count;
 
-    for(int i = 0; i < h->count-1; i++){
+    for(int i = 1; i < h->count; i++){
 
         num1    = h->header;
         num2    = num1->link;
@@ -305,17 +310,57 @@ header* bubbleSortList(header *h){
 
 int main(){
 
+    int number, number1;
     header *h   = createList();
 
-    insertFirstNode(h, 10);
-    insertFirstNode(h, 15);
-    insertFirstNode(h, 20);
-    insertFirstNode(h, 25);
+    while(1){
 
-    printList(h);
+        printf("\n1. 리스트 출력\n");
+        printf("2. 리스트 정렬\n");
+        printf("3. 노드 추가\n");
+        printf("4. 노드 삭제\n");
+        printf("5. 프로그램 종료\n\n");
 
-    deleteMiddleNode(h, 10);
+        printf("메뉴를 선택하세요 : ");
+        scanf("%d", &number);
+        printf("\n");
 
-    printList(h);
+        switch(number){
+
+            case 1:
+                printf("결과 : ");
+                printList(h);
+
+                break;
+
+            case 2:
+                bubbleSortList(h);
+
+                break;
+
+            case 3:
+                printf("정수를 입력해주세요 : ");
+                scanf("%d", &number1);
+
+                insertLastNode(h, number1);
+
+                break;
+
+            case 4:
+                deleteLastNode(h);
+
+                break;
+
+            case 5:
+                return 0;
+
+            default:
+                printf("메뉴의 번호를 입력해주세요\n");
+
+                break;
+
+        }
+
+    }
 
 }
