@@ -12,7 +12,7 @@ stackNode *top  = NULL;
 
 void push(int data){
 
-    stackNode *temp = malloc(sizeof(stackNode));
+    stackNode *temp = (stackNode*)malloc(sizeof(stackNode));
     temp->data      = data;
     temp->link      = top;
     top             = temp;
@@ -22,8 +22,7 @@ void push(int data){
 int pop(){
 
     int number;
-    stackNode *temp = malloc(sizeof(stackNode));
-    temp            = top;
+    stackNode *temp = top;
     number          = temp->data;
     top             = temp->link;
 
@@ -35,8 +34,7 @@ int pop(){
 
 void printStack(){
 
-    stackNode *temp = malloc(sizeof(stackNode));
-    temp            = top;
+    stackNode *temp = top;
 
     printf("Stack = [");
 

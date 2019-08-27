@@ -1,77 +1,63 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 
-typedef struct node{
+typedef struct dequeNode{
 
     int data;
-    struct node *link;
+    struct dequeNode *link;
 
-}node;
+}dequeNode;
 
 typedef struct deque{
 
-    node *front, *rear;
+    dequeNode *front, *rear;
 
 }deque;
 
-deque* createDeque(){
+deque* initDeque(){
 
-    deque *D    = malloc(sizeof(deque));
-    D->front    = NULL;
-    D->rear     = NULL;
+    deque *newDeque = (deque*)malloc(sizeof(deque));
+    newDeque->front = NULL;
+    newDeque->rear  = NULL;
 
-    return D;
-
-}
-
-int checkEmpty(deque *D){
-
-    if(D->front == NULL || D->rear == NULL){
-
-        return 1;
-
-    }
-    else{
-
-        return 0;
-
-    }
+    return newDeque;
 
 }
 
 void printDeque(deque *D){
 
-    if(checkEmpty(D)){
+    dequeNode *temp;
 
-        printf("Node가 존재하지 않습니다\n");
+    if(D->front == NULL){
 
-    }
-    else{
+        printf("Node가 없습니다!\n");
 
-        node *temp  = D->front;
-
-        printf("Deque = [ ");
-
-        while(temp){
-
-            printf("%d ", temp->data);
-
-            temp    = temp->link;
-
-        }
-
-        printf("]\n");
+        return;
 
     }
+
+    temp    = D->front;
+
+    printf("Deque = [ ");
+
+    while(temp){
+
+        printf("%d ", temp->data);
+
+        temp    = temp->link;
+
+    }
+
+    printf("]\n");
 
 }
 
-void insertFront(deque *D, int data){
+void frontInsertNode(deque *D, int data){
 
-    node *newNode   = (node*)malloc(sizeof(node));
-    newNode->data   = data;
+    dequeNode *newNode  = (dequeNode*)malloc(sizeof(dequeNode));
+    newNode->data       = data;
 
-    if(checkEmpty(D)){
+    if(D->front == NULL){
 
         newNode->link   = NULL;
         D->front        = newNode;
@@ -87,43 +73,16 @@ void insertFront(deque *D, int data){
 
 }
 
-void deleteFront(deque *D){
+void rearInsertNode(deque *D, int data){
 
-    if(checkEmpty(D)){
+    dequeNode *newNode  = (dequeNode*)malloc(sizeof(dequeNode));
+    newNode->data       = data;
+    newNode->link       = NULL;
 
-        printf("Node가 존재하지 않습니다]n");
+    if(D->front == NULL){
 
-    }
-    else if(D->front == D->rear){
-
-        node *old   = D->front;
-        D->front    = NULL;
-        D->rear     = NULL;
-
-        free(old);
-
-    }
-    else{
-
-        node *old   = D->front;
-        D->front    = D->front->link;
-
-        free(old);
-
-    }
-
-}
-
-void insertRear(deque *D, int data){
-
-    node *newNode  = (node*)malloc(sizeof(node));
-    newNode->data  = data;
-    newNode->link   = NULL;
-
-    if(checkEmpty(D)){
-
-        D->front        = newNode;
-        D->rear         = newNode;
+        D->front    = newNode;
+        D->rear     = newNode;
 
     }
     else{
@@ -135,16 +94,14 @@ void insertRear(deque *D, int data){
 
 }
 
-void deleteRear(deque *D){
+void frontDeleteNode(deque *D){
 
-    if(checkEmpty(D)){
+    dequeNode *old  = D->front;
 
-        printf("Node가 존재하지 않습니다\n");
-
-    }
+    if(D->front == NULL)
+        printf("Node가 없습니다!\n");
     else if(D->front == D->rear){
 
-        node *old   = D->front;
         D->front    = NULL;
         D->rear     = NULL;
 
@@ -153,7 +110,32 @@ void deleteRear(deque *D){
     }
     else{
 
-        node *pre   = D->front;
+        D->front    = old->link;
+
+        free(old);
+
+    }
+
+}
+
+void rearDeleteNode(deque *D){
+
+    dequeNode *pre, *old;
+
+    if(D->front == NULL)
+        printf("Node가 없습니다!\n");
+    else if(D->front == D->rear){
+
+        old         = D->front;
+        D->front    = NULL;
+        D->rear     = NULL;
+
+        free(old);
+
+    }
+    else{
+
+        pre = D->front;
 
         while(pre->link != D->rear){
 
@@ -161,7 +143,7 @@ void deleteRear(deque *D){
 
         }
 
-        node *old   = pre->link;
+        old         = pre->link;
         pre->link   = NULL;
         D->rear     = pre;
 
@@ -173,13 +155,12 @@ void deleteRear(deque *D){
 
 int main(){
 
-    deque *D    = createDeque();
+    deque *D    = initDeque();
 
-    insertFront(D, 10);
-    insertFront(D, 20);
-    insertRear(D, 30);
-
-    deleteFront(D);
+    frontInsertNode(D, 10);
+    frontInsertNode(D, 120);
+    frontInsertNode(D, 20);
+    rearDeleteNode(D);
 
     printDeque(D);
 

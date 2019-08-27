@@ -1,55 +1,67 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 
-typedef struct node{
+typedef struct queueNode{
 
     int data;
-    struct node *link;
+    struct queueNode *link;
 
-}node;
+}queueNode;
 
 typedef struct queue{
 
-    node *front, *rear;
+    queueNode *front, *rear;
 
 }queue;
 
-queue* createQueue(){
+queue* initQueue(){
 
-    queue *Q     = malloc(sizeof(queue));
-    Q->front    = NULL;
-    Q->rear     = NULL;
+    queue *newQueue = (queue*)malloc(sizeof(queue));
+    newQueue->front = NULL;
+    newQueue->rear  = NULL;
 
-    return Q;
+    return newQueue;
 
 }
 
 void printQueue(queue *Q){
 
-    node *temp  = Q->front;
+    queueNode *temp;
 
-    printf("Queue = [");
+    if(Q->front == NULL){
 
-    while(temp->link != NULL){
+        printf("Node가 없습니다!\n");
 
-        printf("%d, ", temp->data);
+        return;
+
+    }
+
+    temp    = Q->front;
+
+    printf("Queue = [ ");
+
+    while(temp){
+
+        printf("%d ", temp->data);
+
         temp    = temp->link;
 
     }
 
-    printf("%d]\n", temp->data);
+    printf("]\n");
 
 }
 
-void createNode(queue *Q, int data){
+void insertNode(queue *Q, int data){
 
-    node *newNode   = malloc(sizeof(node));
+    queueNode *newNode   = (queueNode*)malloc(sizeof(queueNode));
     newNode->data   = data;
     newNode->link   = NULL;
 
     if(Q->front == NULL){
-        Q->front  = newNode;
-        Q->rear   = newNode;
+
+        Q->front    = newNode;
+        Q->rear     = newNode;
 
     }
     else{
@@ -63,34 +75,37 @@ void createNode(queue *Q, int data){
 
 void deleteNode(queue *Q){
 
-    node *old   = Q->front;
+    queueNode *old = Q->front;
 
-    if(Q->front == NULL){
+    if(Q->front == NULL)
+        printf("Node가 없습니다!\n");
+    else if(Q->front == Q->rear){
 
-        printf("삭제 할 노드가 없습니다!");
+        Q->front    = NULL;
+        Q->rear     = NULL;
 
-        return;
-
-    }
-
-    Q->front    = Q->front->link;
-
-    if(Q->front == NULL){
-
-        Q->rear = NULL;
+        free(old);
 
     }
+    else{
 
-    free(old);
+        Q->front        = old->link;
+
+        free(old);
+
+    }
 
 }
 
 int main(){
 
-    queue *Q    = createQueue();
+    queue *Q    = initQueue();
 
-    createNode(Q, 10);
-    createNode(Q, 20);
+    insertNode(Q, 10);
+    insertNode(Q, 20);
+    insertNode(Q, 19);
+    insertNode(Q, 11);
+
     printQueue(Q);
 
 }

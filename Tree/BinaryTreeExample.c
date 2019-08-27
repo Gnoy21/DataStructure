@@ -23,21 +23,9 @@ node* insertNode(node *rootNode, int data){
         return newNode;
 
     }
-    else if(rootNode->data > data){
-
-        rootNode->left  = insertNode(rootNode->left, data);
-
-    }
-    else if(rootNode->data < data){
-
-        rootNode->right = insertNode(rootNode->right, data);
-
-    }
-    else{
-
-        printf("삽입하려는 노드가 이미 있습니다.\n");
-
-    }
+    else if(rootNode->data > data)  rootNode->left  = insertNode(rootNode->left, data);
+    else if(rootNode->data < data)  rootNode->right = insertNode(rootNode->right, data);
+    else    printf("삽입하려는 노드가 이미 있습니다.\n");
 
     return rootNode;
 
@@ -65,21 +53,25 @@ node* deleteNode(node *rootNode, int data){
 
     if(rootNode == NULL) return NULL;
 
-    if(rootNode->data > data) rootNode->left = deleteNode(rootNode->left, data);
-    else if(rootNode->data < data) rootNode->right = deleteNode(rootNode->right, data);
+    if(rootNode->data > data)   rootNode->left = deleteNode(rootNode->left, data);
+    else if(rootNode->data < data)  rootNode->right = deleteNode(rootNode->right, data);
     else{
 
+        //차수가 2일 때
         if(rootNode->left != NULL && rootNode->right != NULL){
 
-            tNode   = findMinNode(rootNode->right);
+            tNode           = findMinNode(rootNode->right);
             rootNode->data  = tNode->data;
             rootNode->right = deleteNode(rootNode->right, tNode->data);
 
         }
+        //차수 1 또는 0일때
         else{
 
             tNode   = (rootNode->left == NULL) ? rootNode->right : rootNode->left;
+
             free(rootNode);
+
             return tNode;
 
         }
