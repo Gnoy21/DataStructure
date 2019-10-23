@@ -30,8 +30,7 @@ node* RR_rotate(node *p){
 
 node* LR_rotate(node *p){
 
-    node *child = p->left;
-    p->left     = RR_rotate(child);
+    p->left     = RR_rotate(p->left);
 
     return LL_rotate(p);
 
@@ -39,8 +38,7 @@ node* LR_rotate(node *p){
 
 node* RL_rotate(node *p){
 
-    node *child = p->right;
-    p->right     = LL_rotate(child);
+    p->right     = LL_rotate(p->right);
 
     return RR_rotate(p);
 
@@ -48,7 +46,7 @@ node* RL_rotate(node *p){
 
 int getHeight(node *p){
 
-    if(p == NULL)   return 0;
+    if(p == NULL) return 0;
     else{
 
         int leftHeight  = getHeight(p->left);
@@ -62,8 +60,8 @@ int getHeight(node *p){
 
 int getBF(node *p){
 
-    if(p == NULL)   return 0;
-    else    return getHeight(p->left) - getHeight(p->right);
+    if(p == NULL) return 0;
+    else return getHeight(p->left) - getHeight(p->right);
 
 }
 
@@ -74,13 +72,13 @@ node* rebalanceTree(node *p){
     if(BF > 1){
 
         if(getBF(p->left) == 1) p   = LL_rotate(p);
-        else    p   = LR_rotate(p);
+        else p   = LR_rotate(p);
 
     }
     else if(BF < -1){
 
         if(getBF(p->right) == -1) p = RR_rotate(p);
-        else    p   = RL_rotate(p);
+        else p   = RL_rotate(p);
 
     }
 
@@ -101,13 +99,13 @@ node* insertNode(node *p, int data){
     else if(p->data > data){
 
         p->left = insertNode(p->left, data);
-        p   = rebalanceTree(p);
+        p       = rebalanceTree(p);
 
     }
     else if(p->data < data){
 
         p->right    = insertNode(p->right, data);
-        p   = rebalanceTree(p);
+        p           = rebalanceTree(p);
 
     }
     else    printf("이미 같은 키가 존재합니다!\n");

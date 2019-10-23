@@ -11,21 +11,19 @@ typedef struct node{
 
 node* insertNode(node *rootNode, int data){
 
-    node *newNode;
-
     if(rootNode == NULL){
 
-        newNode         = (node*)malloc(sizeof(node));
-        newNode->data   = data;
-        newNode->left   = NULL;
-        newNode->right  = NULL;
+        rootNode        = (node*)malloc(sizeof(node));
+        rootNode->data  = data;
+        rootNode->left  = NULL;
+        rootNode->right = NULL;
 
-        return newNode;
+        return rootNode;
 
     }
-    else if(rootNode->data > data)  rootNode->left  = insertNode(rootNode->left, data);
-    else if(rootNode->data < data)  rootNode->right = insertNode(rootNode->right, data);
-    else    printf("삽입하려는 노드가 이미 있습니다.\n");
+    else if(rootNode->data > data) rootNode->left  = insertNode(rootNode->left, data);
+    else if(rootNode->data < data) rootNode->right = insertNode(rootNode->right, data);
+    else printf("삽입하려는 노드가 이미 있습니다.\n");
 
     return rootNode;
 
@@ -52,9 +50,8 @@ node* deleteNode(node *rootNode, int data){
     node *tNode;
 
     if(rootNode == NULL) return NULL;
-
-    if(rootNode->data > data)   rootNode->left = deleteNode(rootNode->left, data);
-    else if(rootNode->data < data)  rootNode->right = deleteNode(rootNode->right, data);
+    else if(rootNode->data > data) rootNode->left   = deleteNode(rootNode->left, data);
+    else if(rootNode->data < data) rootNode->right  = deleteNode(rootNode->right, data);
     else{
 
         //차수가 2일 때

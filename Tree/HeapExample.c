@@ -19,8 +19,7 @@ heap* initHeap(){
 
 void insertHeap(heap *h, int data){
 
-    int i;
-    i   = ++h->heap_size;
+    int i   = ++h->heap_size;
 
     while(i != 1 && data > h->heap[i/2]){
 
@@ -39,7 +38,7 @@ int deleteHeap(heap *h){
     int parent, child, item, temp;
 
     item    = h->heap[1];
-    temp    = h->heap[h->heap_size--];
+    temp    = h->heap[h->heap_size--]; //¸¶Áö¸· Node
     parent  = 1;
     child   = 2;
 
@@ -53,7 +52,7 @@ int deleteHeap(heap *h){
 
         h->heap[parent] = h->heap[child];
         parent          = child;
-        child *= 2;
+        child           = child * 2;
 
     }
 
